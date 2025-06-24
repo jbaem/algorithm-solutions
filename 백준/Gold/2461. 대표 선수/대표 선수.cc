@@ -21,7 +21,7 @@ int delete_first(int target) {
 
 int main() {
     fastio();
-
+    
     cin >> N >> M;
     for (int i = 0; i < N; ++i) {
         for (int j = 0; j < M; ++j) {
@@ -34,19 +34,16 @@ int main() {
     sort(v.begin(), v.end());
 
     classCnt.assign(N, 0);
-    int left = 0, right = -1, vSize = v.size();
+    
+    int left = 0, right = -1, vSize = v.size(), uniCnt = 0;
     while (++right < vSize) {
-        classCnt[v[right][1]]++;
-        
-        bool flag = true;
-        for (int i = 0; i < N; ++i) {
-            if (classCnt[i] == 0) {
-                flag = false;
-                break;
-            }
+        if (++classCnt[v[right][1]] == 1) {
+            uniCnt++;
         }
-        if (!flag) continue;
-
+        if (uniCnt < N) {
+            continue;
+        }
+        
         left = delete_first(left);
         res = min(res, v[right][0] - v[left][0]);
     }
