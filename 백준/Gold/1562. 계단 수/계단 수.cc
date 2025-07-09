@@ -1,8 +1,6 @@
 #define fastio() ios_base::sync_with_stdio(0),cin.tie(0),cout.tie(0);
 #include <iostream>
 #include <algorithm>
-#include <vector>
-
 #define MOD 1000000000
 
 using namespace std;
