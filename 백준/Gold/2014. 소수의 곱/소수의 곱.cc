@@ -31,7 +31,7 @@ int main() {
             long long next = (long long)curr * n;
             if (next >= INT_MAX) continue;
             s.insert(next);
-            if (s.size() > N) s.erase(*s.rbegin());
+            if (curr % n == 0) break;
         }
     }
     cout << curr;
