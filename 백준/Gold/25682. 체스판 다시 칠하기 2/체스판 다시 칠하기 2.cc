@@ -10,30 +10,24 @@ using vv = vector<vector<T>>;
 
 int N, M, K, ans;
 
-vv<int> fillKPrefixSum(vv<bool>& v, bool bIsStartWithBlack) { // row processing
-    vv<int> res(N, vector<int>(M));
-	for (int i = 0; i < N; ++i) {
-		bool bIsBlack = i % 2 == 0 ? bIsStartWithBlack : !bIsStartWithBlack;
-        int cnt = 0;    
-        for (int j = 0; j < M; ++j) {
-			bool bIsRemoveBlack = K % 2 == 0 ? bIsBlack : !bIsBlack;
-            if (v[i][j] != bIsBlack) ++cnt;
-            if (j >= K && v[i][j - K] != bIsRemoveBlack) --cnt;
-            res[i][j] = cnt;
-            bIsBlack = !bIsBlack;
+vv<int> fillKPrefixSum(vv<bool>& v, bool bIsStartWithBlack) {
+    vv<int> res(N + 1, vector<int>(M + 1, 0));
+    for (int i = 1; i <= N; ++i) {
+        bool bIsBlack = i % 2 == 1 ? bIsStartWithBlack : !bIsStartWithBlack;
+        for (int j = 1; j <= M; ++j) {
+            res[i][j] = res[i - 1][j] + res[i][j - 1] - res[i - 1][j - 1];
+            if (v[i][j] != bIsBlack) ++res[i][j];
+			bIsBlack = !bIsBlack;
         }
-    }    
+    }
     return res;
 }
 
-int countChanges(const vv<int>& v) { // column processing
+int countChanges(const vv<int>& v) { 
     int res = N * M;
-    for (int j = K - 1; j < M; ++j) {
-        int sum = 0;
-        for (int i = 0; i < N; ++i) {
-            sum += v[i][j];
-            if (i < K - 1) continue;
-            if (i >= K) sum -= v[i - K][j];
+    for (int i = K; i <= N; ++i) {
+        for (int j = K; j <= M; ++j) {
+            int sum = v[i][j] - v[i - K][j] - v[i][j - K] + v[i - K][j - K];
             res = min(res, sum);
         }
     }
@@ -44,9 +38,9 @@ int main() {
     fastio();
 
     cin >> N >> M >> K;
-    vv<bool> v(N, vector<bool>(M));
-    for (int i = 0; i < N; ++i) {
-        for (int j = 0; j < M; ++j) {
+    vv<bool> v(N + 1, vector<bool>(M + 1));
+    for (int i = 1; i <= N; ++i) {
+        for (int j = 1; j <= M; ++j) {
             char tmp; cin >> tmp;
             v[i][j] = tmp == 'B';
         }
