@@ -6,10 +6,10 @@ using namespace std;
 int solution(vector<int> diffs, vector<int> times, long long limit) {
     int answer = 0, sz = diffs.size();
     
-    int l = 1, r = 100000, m; //lev
+    int l = 1, r = 100000, m;
     while (l < r) {
         m = l + (r - l) / 2;
-        cout << l << "," << r << "\n";
+
         long long tmpTime = 0;
         for (int i = 0; i < sz; ++i) {
             if (diffs[i] > m) {
